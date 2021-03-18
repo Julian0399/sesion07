@@ -201,11 +201,67 @@
 		}
 
 		//MATRIZ DE TRANSFORMACION
+<<<<<<< Updated upstream
 		var t = new THREE.Matrix4();		//Crear la matriz de transformación
+=======
+		var t = new THREE.Matrix4();
+		// SACADO DEL LIBRO INFORMATICA GRAFICA.
+        var dcos = Math.cos(0.20);
+		var dsen = Math.sin(0.20);
+		if (transf == 'R'){
+			if(upArrow) {
+		    t.set( 	dcos, 0, dsen, 0,
+					0, 1, 0, 0, 
+					-dsen, 0,dcos, 0,
+					0, 0, 0, 1	); 
+			
+		}
+		if(downArrow) {
+			t.set( 	dcos, 0, -dsen, 0,
+					0, 1, 0, 0, 
+					dsen, 0,dcos, 0,
+					0, 0, 0, 1	);
+			
+		}
+		if(leftArrow) {
+			t.set( 	1, 0, 0, 0,   
+					0, dcos, -dsen, 0, 
+					0, dsen,dcos, 0,
+					0, 0, 0, 1	);
+			
+		}
+		if(rightArrow) {
+			t.set( 	1, 0, 0, 0,   
+					0, dcos, dsen, 0, 
+					0, -dseny,dcos, 0,
+					0, 0, 0, 1	);                                                                                     //Realizado en clase
+			
+		}
+		if(homeKey) {
+			t.set( 	dcos, -dsen, 0, 0,
+			        dsen, dcos, 0, 0, 
+					0, 0,1, 0,
+					0, 0, 0, 1	);
+			
+		}
+		if(endKey) {
+			t.set( 	dcos, dsen, 0, 0,
+				    -dsen, dcos, 0, 0, 
+					0, 0,1, 0,
+					0, 0, 0, 1	)
+			
+		}
+		}
+			//t.set( 	1, 0, 0, tx,
+			//		0, 1, 0, ty,          	//me pierdon en como cambiar la matriz y como funciona el tema de la tecla oprimida
+			//		0, 0, 1, tz,
+			//		0, 0, 0, 1	);		//Crear la matriz de transformación
+>>>>>>> Stashed changes
 		if (transf == 'T')
 			t.set( 	1, 0, 0, tx,
 					0, 1, 0, ty, 
 					0, 0, 1, tz,
+<<<<<<< Updated upstream
 					0, 0, 0, 1	);
 
 		if (transf == 'E')
@@ -221,10 +277,26 @@
 					0, 0, 0, 1	);
 
 		object.applyMatrix(t);				//Aplicar la matriz de transformación al objeto				
+=======
+					0, 0, 0, 1	);	
+
+		if (transf == 'E')
+			t.set( 	tx, 0, 0, 0,
+					0, ty, 0, 0,           // sigue igual
+					0, 0, tz, 0,
+					0, 0, 0, 1);
+
+
+					object.applyMatrix(t);//Aplicar la matriz de transformación al objeto				
+>>>>>>> Stashed changes
 		object.elementsNeedUpdate = true;	//Avisar que la matriz del objeto ha cambiado
         camera.lookAt( 0, 0, 0 );
         renderer.render( scene, camera );                                                                //REVISAR RENDER
     }
+	function animate() {
+        render();
+        requestAnimationFrame( animate );
+	}
     </script>
   </body>
 </html>
