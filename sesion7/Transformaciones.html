@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Transformaciones</title>
@@ -17,8 +17,8 @@
     <div id="info"><p id="transf">TRASLACIÓN</p>
           Usar flecha arriba y abajo para mover sobre eje Y<br/>
 		  Usar flecha izquierda y derecha para mover sobre eje X<br/>
-		  Usar tecla 'Inicio' y 'Fin' para mover sobre eje Z<br/>
-		  Usar tecla NumPad5 ('Clear') para mover al origen<br/>
+		  Usar tecla 'w' y 's' para mover sobre eje Z<br/>
+		  Usar tecla Borrar ('Clear') para volver la figura al origen<br/>
 		  Usar 'R' para rotar, 'T' para trasladar y 'E' para escalar<br/>
     </div>
     <script src="js/three.min.js"></script>
@@ -49,10 +49,10 @@
 			//Códigos de teclado: http://keycode.info 
 			var onKeyDown = function ( event ) {
 				switch ( event.keyCode ) {
-					case 35: // 
+					case 83: // 
 						endKey = true;
 						break;
-					case 36: // 
+					case 87: // 
 						homeKey = true;
 						break;
 					case 37: // 
@@ -67,7 +67,7 @@
 					case 40: // TRASLADAR EN DIRECCION NEGATIVA
 						downArrow = true;
 						break;
-					case 12:  // IR AL ORIGEN DE LAS COORDENADAS
+					case 8:  // IR AL ORIGEN DE LAS COORDENADAS
 						clearKey = true;
 						break;
 					case 69:  // ACTIVAR ESCALADO
@@ -177,22 +177,22 @@
 			tx=1; ty=1; tz=1;
 		}
 		if(upArrow) {
-			ty = (transf == 'T' ? 1 : transf == 'E' ? 1.1 : transf == 'R' ? 1 : 0);
+			ty = (transf == 'T' ? 0.5 : transf == 'E' ? 1.1 : transf == 'R' ? Math.PI/12 : 0);
 		}
 		if(downArrow) {
-			ty = (transf == 'T' ? -1 : transf == 'E' ? 10/11 : transf == 'R' ? -Math.PI/12 : 0);
+			ty = (transf == 'T' ? -0.5  : transf == 'E' ? 10/11 : transf == 'R' ? -Math.PI/12 : 0);
 		}
 		if(leftArrow) {
-			tx = (transf == 'T' ? -1 : transf == 'E' ? 10/11 : transf == 'R' ? -Math.PI/12 : 0);
+			tx = (transf == 'T' ? -0.5  : transf == 'E' ? 10/11 : transf == 'R' ? -Math.PI/12 : 0);
 		}
 		if(rightArrow) {                                                                                     //Realizado en clase
-			ty = (transf == 'T' ? 1 : transf == 'E' ? 10/11 : transf == 'R' ? Math.PI/12 : 0);
+			tx = (transf == 'T' ? 0.5  : transf == 'E' ? 10/11 : transf == 'R' ? Math.PI/12 : 0);
 		}
 		if(homeKey) {
-			tz = (transf == 'T' ? 1 : transf == 'E' ? 10/11 : transf == 'R' ? Math.PI/12 : 0);
+			tz = (transf == 'T' ? 0.5  : transf == 'E' ? 10/11 : transf == 'R' ? Math.PI/12 : 0);
 		}
 		if(endKey) {
-			tz = (transf == 'T' ? -1 : transf == 'E' ? 10/11 : transf == 'R' ? -Math.PI/12 : 0);
+			tz = (transf == 'T' ? -0.5  : transf == 'E' ? 10/11 : transf == 'R' ? -Math.PI/12 : 0);
 		}
 		if(clearKey) {
 			tx=-object.position.x;
@@ -207,20 +207,46 @@
 					0, 1, 0, ty, 
 					0, 0, 1, tz,
 					0, 0, 0, 1	);
+					object.applyMatrix(t);	
 
 		if (transf == 'E')
 			t.set( 	tx, 0, 0, 0,
-					0, ty, 0, 0, 
+					0, ty, 0, 0,           // sigue igual
 					0, 0, tz, 0,
 					0, 0, 0, 1);
+// SACADO DEL LIBRO INFORMATICA GRAFICA.
+        var dcos = Math.cos(0.20);
+		var dsen = Math.sin(0.20);
+		if (transf == 'R'){
+			if(upArrow) {
+		    t.set( 	dcos, 0, dsen, 0,
+					0, 1, 0, 0, 
+					-dsen, 0,dcos, 0,
+					0, 0, 0, 1	); 
+			
+		}
+		if(downArrow) {
+			
+		}
+		if(leftArrow) {
+			
+		}
+		if(rightArrow) {                                                                                     //Realizado en clase
+			
+		}
+		if(homeKey) {
+			
+		}
+		if(endKey) {
+			
+		}
+		}
+			//t.set( 	1, 0, 0, tx,
+			//		0, 1, 0, ty,          	//me pierdon en como cambiar la matriz y como funciona el tema de la tecla oprimida
+			//		0, 0, 1, tz,
+			//		0, 0, 0, 1	);
 
-		if (transf == 'R')
-			t.set( 	1, 0, 0, tx,
-					0, 1, 0, ty,          	//me pierdon en como cambiar la matriz y como funciona el tema de la tecla oprimida
-					0, 0, 1, tz,
-					0, 0, 0, 1	);
-
-		object.applyMatrix(t);				//Aplicar la matriz de transformación al objeto				
+					//Aplicar la matriz de transformación al objeto				
 		object.elementsNeedUpdate = true;	//Avisar que la matriz del objeto ha cambiado
         camera.lookAt( 0, 0, 0 );
         renderer.render( scene, camera );                                                                //REVISAR RENDER
